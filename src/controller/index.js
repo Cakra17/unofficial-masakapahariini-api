@@ -222,7 +222,7 @@ const Controller = {
             let metaDuration, metaServings, metaDificulty, metaIngredient;
             let title, thumb, user, datePublished, desc, quantity, ingredient, ingredients, time;
             let parseDuration, parseServings, parseDificulty, parseIngredient;
-            let duration, servings, difficulty;
+            let duration, servings, difficulty, calories;
             let servingsArr = [];
             let difficultyArr = [];
             let object = {};
@@ -242,13 +242,15 @@ const Controller = {
             
             servings = elementHeader.find('._kritique-rate div').attr('style');
             duration = elementHeader.find('._recipe-features').find('a:not([data-tracking])').text().trim();
-            difficulty = elementHeader.find('._recipe-features a[data-tracking]').text().trim()
+            difficulty = elementHeader.find('._recipe-features a.icon_difficulty').text().trim()
+            calories = elementHeader.find('._recipe-features a.icon_fire').text().trim()
 
             object.title = title;
             object.thumb = thumb;
             object.servings = servings;
             object.times = duration;
             object.difficulty = difficulty;
+            object.calories = calories;
             object.author = { user, datePublished };
             
             elementDesc.each((i, e) => {
