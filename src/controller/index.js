@@ -284,7 +284,14 @@ const Controller = {
                     term = productLink[0].replace("\n", "");
                     ingredients = `${quantity} ${term}`;
                     ingredientsArr.push(ingredients)
-                }else if (metaIngredient[0] != "") {
+                }else if (
+                  metaIngredient[0] != "" &&
+                  metaIngredient[metaIngredient.length - 2] != ""
+                ) {
+                  term = metaIngredient[0].replace("\n", "").trim()
+                  ingredients = `${quantity} ${term}`;
+                  ingredientsArr.push(ingredients);
+                } else if (metaIngredient[0] != "") {
                   term =
                     metaIngredient[0].replace("\n", "").trim() +
                     " " +
