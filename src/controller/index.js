@@ -219,7 +219,7 @@ const Controller = {
             const key = req.params.key;
             const response = await services.fetchService(`${baseUrl}/resep/${key}`, res);
             const $ = cheerio.load(response.data);
-            let metaDuration, metaServings, metaDificulty, metaIngredient;
+            let metaDuration, metaServings, metaDificulty, metaIngredient, productLink;
             let title, thumb, user, datePublished, desc, quantity, ingredient, ingredients, time;
             let parseDuration, parseServings, parseDificulty, parseIngredient;
             let duration, servings, difficulty, calories;
@@ -274,14 +274,25 @@ const Controller = {
             let ingredientsArr = [];
             elementIngredients.find('.d-flex').each((i, e) => {
                 let term = '';
+                let term2 = '';
                 quantity = $(e).find('.part').text().trim();
                 metaIngredient = $(e).find('.item').text().trim().split('\r\t')[0];
+                productLink = $(e).find('.item').find('a').text().trim().split('\r\t')[0];
                 metaIngredient = metaIngredient.split('\t');
-                if (metaIngredient[0] != '') {
-                    term = metaIngredient[0].replace('\n', '').trim() + ' '
-                        + metaIngredient[metaIngredient.length - 1].replace('\n', '').trim();
+                productLink = productLink.split('\t');
+                if (metaIngredient[0] != '' && productLink[0] != '') {
+                    term = productLink[0].replace("\n", "");
                     ingredients = `${quantity} ${term}`;
                     ingredientsArr.push(ingredients)
+                }else if (metaIngredient[0] != "") {
+                  term =
+                    metaIngredient[0].replace("\n", "").trim() +
+                    " " +
+                    metaIngredient[metaIngredient.length - 1]
+                      .replace("\n", "")
+                      .trim();
+                  ingredients = `${quantity} ${term}`;
+                  ingredientsArr.push(ingredients);
                 }
             });
 
