@@ -308,7 +308,7 @@ const Controller = {
             let stepArr = [];
             elementTutorial.find('.step').each((i, e) => {
                 step = $(e).find(".content").find("p").text();
-                resultStep = `${i + 1}. ${step}`
+                resultStep = `${step}`
                 stepArr.push(resultStep);
             });
 
