@@ -228,7 +228,6 @@ const Controller = {
             let duration, servings, difficulty, calories;
             let object = {};
             const elementHeader = $('._recipe-header');
-            const elementDesc = $('._rich-content').first();
             const elementNeeded = $('._product-popup');
             const elementIngredients = $('div._recipe-ingredients');
             const elementTutorial = $('._recipe-steps');
@@ -245,6 +244,7 @@ const Controller = {
             duration = elementHeader.find('._recipe-features').find('a:not([data-tracking])').text().trim();
             difficulty = elementHeader.find('._recipe-features a.icon_difficulty').text().trim()
             calories = elementHeader.find('._recipe-features a.icon_fire').text().trim()
+            desc =  elementHeader.find('.excerpt').text().trim();
 
             object.title = title;
             object.thumb = thumb;
@@ -253,11 +253,8 @@ const Controller = {
             object.difficulty = difficulty;
             object.calories = calories;
             object.author = { user, datePublished };
-            
-            elementDesc.each((i, e) => {
-                desc = $(e).find('p').text();
-                object.desc = desc;
-            });
+            object.desc = desc;
+
 
             let thumb_item, need_item;
             let neededArr = [];
