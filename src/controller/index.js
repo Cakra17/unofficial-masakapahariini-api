@@ -178,12 +178,39 @@ const Controller = {
 
     category: async (req, res) => {
         try {
-            const response = await services.fetchService(`${baseUrl}/site-map/`, res);
-            return fetchCategory(req, res, response, 4);
-            
-        } catch (error) {
+            const response = await services.fetchService(`${baseUrl}`, res);
+            const $ = cheerio.load(response.data);
+            const element = $("._categories-list ul.list-unstyled");
+            let category, key, link;
+            let category_list = [];
+      
+            element.find("li").each((i, e) => {
+              category = $(e).find("a").text().trim();
+              link = $(e).find("a").attr('href');
+              key = $(e).find("a").attr("href").split("/")[4];
+              let img = $(e)
+                .find("noscript")
+                .text()
+                .match(/src="([^"]+)"/g)
+                .toString()
+                .replace('src="', "")
+                .replace('"', "");
+              category_list.push({
+                category,
+                key,
+                img,
+                link
+              });
+            });
+      
+            return res.send({
+              method: req.method,
+              status: true,
+              results: category_list,
+            });
+          } catch (error) {
             throw error;
-        }
+          }
     },
 
     article: async (req, res) => {
@@ -272,7 +299,6 @@ const Controller = {
             let ingredientsArr = [];
             elementIngredients.find('.d-flex').each((i, e) => {
                 let term = '';
-                let term2 = '';
                 quantity = $(e).find('.part').text().trim();
                 metaIngredient = $(e).find('.item').text().trim().split('\r\t')[0];
                 productLink = $(e).find('.item').find('a').text().trim().split('\r\t')[0];
