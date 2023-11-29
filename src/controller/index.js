@@ -279,6 +279,7 @@ const Controller = {
             object.times = duration;
             object.difficulty = difficulty;
             object.calories = calories;
+            object.key = key;
             object.author = { user, datePublished };
             object.desc = desc;
 
